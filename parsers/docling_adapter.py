@@ -20,7 +20,10 @@ class DoclingAdapter:
 
     def _get_converter(self):
         if self._converter is None:
-            from docling.document_converter import DocumentConverter
+            try:
+    from docling.document_converter import DocumentConverter
+except ImportError:
+    DocumentConverter = None
             self._converter = DocumentConverter()
         return self._converter
 

@@ -27,7 +27,10 @@ class MinerUAdapter:
         if self.cli_available:
             return True
         try:
-            import magic_pdf
+            try:
+    import magic_pdf
+except ImportError:
+    magic_pdf = None
             return True
         except ImportError:
             return False
