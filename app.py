@@ -223,11 +223,17 @@ if "chat_history" not in st.session_state:
 if "selected_question" not in st.session_state:
     st.session_state.selected_question = None
 
-# Active Model Config (Stored in session state or .env)
+# Active Model Config (Loaded from environment / .env)
 if "ai_provider" not in st.session_state:
-    st.session_state.ai_provider = "Groq" if os.getenv("GROQ_API_KEY") else "Deterministic"
-if "model_name" not in st.session_state:
-    st.session_state.model_name = "openai/gpt-oss-120b"
+    if os.getenv("GROQ_API_KEY"):
+        st.session_state.ai_provider = "Groq"
+        st.session_state.model_name = "openai/gpt-oss-120b"
+    elif os.getenv("GEMINI_API_KEY"):
+        st.session_state.ai_provider = "Google Gemini"
+        st.session_state.model_name = "gemini-2.5-flash"
+    else:
+        st.session_state.ai_provider = "Deterministic"
+        st.session_state.model_name = "deterministic"
 
 # Retrieve all loaded documents and web pages
 unique_sources = sorted(list(set(c["source"] for c in engine.chunks)))
@@ -256,31 +262,6 @@ with st.sidebar:
     if st.button("Clear Conversation", use_container_width=True):
         st.session_state.chat_history = []
         st.rerun()
-
-    with st.expander("Model Configuration", expanded=False):
-        default_p_idx = 0 if os.getenv("GEMINI_API_KEY") else 1
-        selected_provider = st.selectbox(
-            "AI Provider",
-            ["Google Gemini", "Groq"],
-            index=default_p_idx
-        )
-        st.session_state.ai_provider = selected_provider
-
-        if selected_provider == "Google Gemini":
-            st.session_state.model_name = st.selectbox(
-                "Gemini Model (Free Tier)",
-                ["gemini-2.5-flash", "gemini-1.5-flash", "gemini-3.8-flash"],
-                index=0
-            )
-            custom_gem_key = st.text_input("Gemini API Key (optional)", type="password", help="Overrides GEMINI_API_KEY from .env")
-            if custom_gem_key:
-                os.environ["GEMINI_API_KEY"] = custom_gem_key
-        else:
-            st.session_state.model_name = st.selectbox(
-                "Groq Model (Free Tier)",
-                ["openai/gpt-oss-120b", "openai/gpt-oss-20b", "qwen/qwen3.8-27b"],
-                index=0
-            )
 
 # ==========================================
 # 2. PAGE 1: ACADEMIC ADVISOR (CHAT)
@@ -386,13 +367,11 @@ elif nav_page == "Document Repository":
     st.markdown('<div class="page-sub-header">Search, inspect, and manage official IIT Jodhpur documents, web portals, and directories indexed in the intelligence system.</div>', unsafe_allow_html=True)
 
     # Overview Metrics Row
-    m_col1, m_col2, m_col3 = st.columns(3)
+    m_col1, m_col2 = st.columns(2)
     with m_col1:
         st.metric("Total Indexed Sources", f"{len(unique_sources)} sources")
     with m_col2:
         st.metric("Total Searchable Segments", f"{len(engine.chunks):,} clauses")
-    with m_col3:
-        st.metric("Repository Scope", "Institute-Wide (A to Z)")
 
     st.markdown("---")
 
