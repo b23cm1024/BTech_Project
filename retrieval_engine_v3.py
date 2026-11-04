@@ -158,6 +158,17 @@ class RetrievalEngineV3:
         self._load_resources()
 
     def _load_resources(self):
+        gz_path = INDEX_PATH + ".gz"
+        if not os.path.exists(INDEX_PATH) and os.path.exists(gz_path):
+            import gzip, shutil
+            try:
+                print("[RetrievalEngineV3] Auto-extracting pre-built index_chunks.json.gz...")
+                with gzip.open(gz_path, "rb") as f_in, open(INDEX_PATH, "wb") as f_out:
+                    shutil.copyfileobj(f_in, f_out)
+                print("[RetrievalEngineV3] Successfully extracted index chunks.")
+            except Exception as e:
+                print(f"[RetrievalEngineV3] Extraction failed: {e}")
+
         if os.path.exists(INDEX_PATH):
             try:
                 with open(INDEX_PATH, "r", encoding="utf-8") as f:

@@ -44,11 +44,36 @@ extract_canonical_tables_precise.py
 extract_curriculum_and_governance_tables.py
 sample_output.txt
 
-# Large Institutional Datasets, Embeddings & Intermediate Indexes (>100MB / Gigabytes)
-data/
+# Large Institutional Datasets, Embeddings & Large Intermediate Caches (>100MB)
+data/pdfs/
+data/chromadb/
+data/bm25_index/
+data/structured_store/
+data/web_pages/
+data/metadata_store/
+data/mineru_output/
+data/logs/
+data/traces/
+data/qdrant_storage/
+data/html/
+data/index_chunks.json
+data/tfidf.pkl
+data/test_*.json
+data/*eval*.json
+data/*results*.json
+data/*benchmark*.json
+data/*report*.md
+data/*verification*.json
+data/*app_answers*.json
+data/*audit*.json
 *.pkl
-*.sqlite3
-*.db
+
+# Allow Essential Knowledge Base Files (< 30MB total, each file < 20MB)
+!data/index_chunks.json.gz
+!data/document_inventory.json
+!data/canonical_structured_tables.json
+!data/iitj_academic.db
+!data/pdf_manifest.json
 
 # Intermediate Reports and Documentation (per user requirement)
 README.md

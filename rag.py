@@ -18,6 +18,30 @@ DATA_DIR   = os.path.join(os.path.dirname(__file__), "data")
 INDEX_PATH = os.path.join(DATA_DIR, "index_chunks.json")
 TFIDF_PATH = os.path.join(DATA_DIR, "tfidf.pkl")
 
+def ensure_index_ready():
+    os.makedirs(DATA_DIR, exist_ok=True)
+    gz_path = INDEX_PATH + ".gz"
+    if not os.path.exists(INDEX_PATH) and os.path.exists(gz_path):
+        import gzip, shutil
+        print("[RAG Engine] Unpacking pre-built institutional index (index_chunks.json.gz)...")
+        with gzip.open(gz_path, "rb") as f_in, open(INDEX_PATH, "wb") as f_out:
+            shutil.copyfileobj(f_in, f_out)
+        print("[RAG Engine] Successfully unpacked institutional chunks.")
+
+    if os.path.exists(INDEX_PATH) and not os.path.exists(TFIDF_PATH):
+        print("[RAG Engine] Generating TF-IDF search index (~7 seconds)...")
+        from sklearn.feature_extraction.text import TfidfVectorizer
+        with open(INDEX_PATH, "r", encoding="utf-8") as f:
+            chunks = json.load(f)
+        corpus = [c.get("text", "") for c in chunks]
+        vectorizer = TfidfVectorizer(max_features=50000, stop_words="english")
+        matrix = vectorizer.fit_transform(corpus)
+        with open(TFIDF_PATH, "wb") as f:
+            pickle.dump({"vectorizer": vectorizer, "matrix": matrix}, f)
+        print("[RAG Engine] TF-IDF search index generated and cached.")
+
+ensure_index_ready()
+
 # ── V2 hybrid store (ChromaDB + BM25). Falls back to TF-IDF when not built. ──
 _v2_store = None
 _v2_store_attempted = False
