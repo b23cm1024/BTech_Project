@@ -1,0 +1,64 @@
+# Environment & Secret Keys
+.env
+.env.local
+.env.*.local
+
+# Python Cache & Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.coverage
+htmlcov/
+*.log
+
+# Virtual Environments
+venv/
+.venv/
+env/
+ENV/
+
+# Development Scratch & Intermediate Verification Scripts
+scratch/
+check_*.py
+scan_*.py
+inject_*.py
+fix_*.py
+inspect_*.py
+generate_*.py
+upsert_*.py
+verify_*.py
+rechunk_*.py
+test_*.py
+tests/
+mass_eval.py
+eval_v2.py
+benchmark_runner.py
+run_10k_eval.py
+run_full_benchmark.py
+run_multimodal_ingest_fast.py
+extract_all_tables.py
+extract_canonical_multimodal_knowledge.py
+extract_canonical_tables_precise.py
+extract_curriculum_and_governance_tables.py
+sample_output.txt
+
+# Large Institutional Datasets, Embeddings & Intermediate Indexes (>100MB / Gigabytes)
+data/
+*.pkl
+*.sqlite3
+*.db
+
+# Intermediate Reports and Documentation (per user requirement)
+README.md
+*report*.md
+*benchmark*.md
+*eval*.md
+*.md
+
+# IDE & OS Artifacts
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
