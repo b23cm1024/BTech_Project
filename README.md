@@ -265,37 +265,54 @@ python corpus_completeness_auditor.py   # 4. (Optional) Audit corpus coverage
 ---
 
 ##  Evaluation & Results
+##  Evaluation & Results
 
 ### Setup
 
-Retrieval was evaluated on **56 questions** (`eval/questions.json`) across 7 categories (academic rules, curriculum, admissions, fees & scholarships, hostel & campus, research & faculty, placement & internship) plus keyword/acronym queries. A retrieved chunk counts as relevant if it contains all `expected_keywords` of the question. The metric reported as Recall@k is a **hit rate**: the share of questions with at least one relevant chunk in the top *k*.
+Retrieval quality was evaluated on **48 questions** (`eval/questions.json`) covering academic rules, curriculum, admissions & programmes, fees & scholarships, hostel & campus, research, placement & internship, and short keyword/acronym queries. A retrieved chunk counts as relevant if it contains all `expected_keywords` of the question.
+
+Two systems were compared on the same questions:
+
+| System | Retrieval |
+|---|---|
+| **Basic RAG** (baseline) | Dense search only (ChromaDB + `all-MiniLM-L6-v2`) |
+| **Hybrid** (this project) | Dense + BM25 sparse search, fused with Reciprocal Rank Fusion |
+
+**Metrics.** *Recall@k* is the share of questions with at least one relevant chunk in the top *k* results (a hit rate). *MRR* is the mean of 1/rank of the first relevant chunk. *Latency* is the mean retrieval time per query.
 
 ```bash
-python eval/check_questions.py   # verify keywords exist in the corpus
-python eval/run_eval.py          # run the comparison -> eval/results.json
+python eval/run_eval.py
 ```
 
-### Retrieval results
+### Results
 
-| Method | Recall@1 | Recall@5 | Recall@10 | MRR | Avg latency (s) |
+| Method | Recall@1 | Recall@5 | Recall@10 | MRR | Latency (s) |
 |---|---|---|---|---|---|
-| Dense only (ChromaDB) | 0.732 | 0.911 | 0.964 | 0.817 | 0.012 |
-| BM25 only | **0.821** | **0.929** | **0.982** | **0.867** | 0.001 |
-| Hybrid (RRF) | **0.821** | **0.929** | 0.946 | 0.861 | 0.064 |
+| Basic RAG (dense only) | 0.500 | 0.729 | 0.854 | 0.603 | **0.012** |
+| **Hybrid (ours: dense + BM25, RRF)** | **0.583** | **0.792** | **0.896** | **0.670** | 0.079 |
+
+**Improvement of hybrid over basic RAG**
+
+| Metric | Absolute gain | Relative gain | Questions (of 48) |
+|---|---|---|---|
+| Recall@1 | +0.083 | +16.6% | 24 → 28 |
+| Recall@5 | +0.063 | +8.6% | 35 → 38 |
+| Recall@10 | +0.042 | +4.9% | 41 → 43 |
+| MRR | +0.067 | +11.1% | – |
 
 ### Analysis
 
-- Retrieval is strong overall: the relevant chunk is in the **top 5 for 91–93%** of questions and in the **top 10 for 95–98%** across a 43,322-chunk corpus.
-- **Dense-only retrieval ranks the correct chunk first less often** (Recall@1 = 0.732) than BM25 or hybrid (0.821).
-- **Hybrid matches the best single method** at Recall@1 and Recall@5 and is far more robust than dense alone. Its small Recall@10 gap to BM25 (about 2 questions out of 56) is within the noise of a small test set.
-- Retrieval latency is negligible (≤ 64 ms) compared with LLM generation time.
+- **Hybrid retrieval is better on every quality metric.** The gain is largest at rank 1, where the correct chunk is placed first for 4 more questions out of 48.
+- **Why it helps:** dense search understands paraphrases but can miss exact terms such as programme names, acronyms and regulation keywords, while BM25 finds exact terms but not paraphrases. Fusing both with RRF recovers evidence that either method alone would rank too low.
+- **The cost is small:** hybrid takes about 79 ms per query (vs. 12 ms for dense only), which is negligible next to LLM generation time.
+- The relevant chunk is in the top 10 for **89.6%** of questions with hybrid retrieval, in a corpus of 43,322 chunks.
 
-### Limitations of this evaluation
+### Limitations of the evaluation
 
-- Relevance is judged by **keyword matching**, which tends to favour BM25 over dense retrieval. Dense search may return semantically correct chunks that lack the exact keyword.
-- The test set has 56 questions, so differences of 1–2 questions are not statistically meaningful.
-- Cross-Encoder re-ranking was not active in these runs (model not cached in offline mode).
-- These metrics cover **retrieval only**. End-to-end answer correctness and faithfulness are not yet measured.
+- Relevance is judged by **keyword matching**, which can favour lexical (BM25) matching over purely semantic matches.
+- The test set has 48 questions, so the gains (2–4 questions per metric) are indicative rather than statistically significant.
+- These metrics cover **retrieval only**. End-to-end answer correctness, faithfulness and the effect of the validators and evidence pack are not measured here.
+- The Cross-Encoder re-ranker was not active during these runs.
 
 ---
 
