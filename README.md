@@ -52,7 +52,7 @@ This project is an **AI advisor** that:
 |  **Source authority** | Source registry and authority scoring prefer official sources |
 |  **Evidence-grounded generation** | Evidence extraction → evidence pack → grounded generator |
 |  **Multi-stage validation** | Retrieval validator, evidence integrity, topic-mismatch validator, deterministic verifier, answer validator |
-|  **LLM fallback chain** | Groq `gpt-oss-120b` → `gpt-oss-20b` / `qwen3.8-27b`; optional Google Gemini |
+|  **LLM fallback chain** | Groq `gpt-oss-120b` → `gpt-oss-20b` / `qwen3.8-27b`|
 |  **Multimodal** | CLIP embeddings for figures/images |
 |  **REST API** | FastAPI service in `api/` |
 |  **Web UI** | Streamlit chat interface in `app.py` |
@@ -155,7 +155,7 @@ BTech_Project/
 | Language | Python 3.10+ |
 | UI | Streamlit (port 8501) |
 | API | FastAPI + Uvicorn (port 8000) |
-| LLM | Groq: `openai/gpt-oss-120b` (default), `openai/gpt-oss-20b`, `qwen/qwen3.8-27b`; optional Google Gemini |
+| LLM | Groq: `openai/gpt-oss-120b` (default), `openai/gpt-oss-20b`, `qwen/qwen3.8-27b` |
 | Dense retrieval | ChromaDB (collection `iitj_chunks`) + `all-MiniLM-L6-v2` |
 | Sparse retrieval | BM25 via `bm25s` |
 | Fusion | Reciprocal Rank Fusion (k = 60) |
