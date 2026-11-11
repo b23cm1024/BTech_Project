@@ -1,0 +1,221 @@
+================================================================================
+IIT JODHPUR INSTITUTIONAL INTELLIGENCE SYSTEM — DEMO & VIVA BENCHMARK QUESTIONS
+================================================================================
+File: sample_demo_questions.txt
+Generated for: B.Tech Project Professor Presentation & System Evaluation
+UI URL: http://localhost:8501
+
+Instructions:
+Copy and paste any of the questions below directly into the chat input of the 
+Streamlit web application (http://localhost:8501) to demonstrate the specific 
+capabilities, multi-channel retrieval, and neuro-symbolic verification layers.
+================================================================================
+
+--------------------------------------------------------------------------------
+1. CATEGORY: ATTENDANCE POLICY & CIRCULAR AMENDMENT
+--------------------------------------------------------------------------------
+Question:
+What is the attendance requirement at IIT Jodhpur, and what happens if a student falls below 75% under Circular 51 versus Section 4.1.9?
+
+What it showcases:
+- Historical statutory conflict resolution between earlier regulations and latest amendments.
+- Section 4.1.9: Students short of 75% attendance are allowed to appear in examinations but must score at least a 'C' grade to pass (marks below 'C' yield 'F' grade).
+- Circular No. 51 (IITJ/OAA/Circular/2024-25/51/682): Grading is unlinked; attendance shortfall results in administrative de-registration and semester withdrawal.
+Primary Sources:
+- Academic Regulations (UG Programs), Section 4.1.9 (Page 8)
+- Circular No. 51 Notification on Deregistration and Attendance Policy Amendment
+
+
+--------------------------------------------------------------------------------
+2. CATEGORY: CURRICULUM CREDITS & COHORT HISTORICAL COMPARISON
+--------------------------------------------------------------------------------
+Question:
+What is the total minimum credit requirement to complete a B.Tech degree in Computer Science and Engineering under both the earlier and revised 2025 curricula?
+
+What it showcases:
+- Multi-document cohort comparison across different admission years.
+- Earlier 2019-2024 Scheme: 165 total credits (150 graded + 15 non-graded/audit: 9 audit + 6 design).
+- Revised 2025+ Scheme: 153 total credits (141 graded + 12 audit credits) / 159 credits with Minor.
+- Eliminates the common RAG failure of blending credits from different academic batches.
+Primary Sources:
+- B.Tech CSE Revised UG Curriculum (2025 Onwards)
+- Earlier B.Tech Curriculum Handbooks (2019-2024)
+
+
+--------------------------------------------------------------------------------
+3. CATEGORY: GRADING POLICIES & SGPA VS. CGPA COMPUTATION
+--------------------------------------------------------------------------------
+Question:
+How are 'E' and 'F' grades treated in SGPA and CGPA calculations when a student repeats a failed course?
+
+What it showcases:
+- Mathematical and regulatory formula verification.
+- Section 5.3 & Table 1: Both 'E' and 'F' grades are included in the SGPA of that semester.
+- In CGPA computation, fail grades ('E' and 'F') are excluded; once the course is cleared, only the passing grade (A* to D) is incorporated into the cumulative CGPA.
+- Both attempts remain permanently recorded on the academic transcript.
+Primary Sources:
+- Academic Regulations (UG Programs), Section 5.3 & Table 1 (Page 9)
+
+
+--------------------------------------------------------------------------------
+4. CATEGORY: MEDICAL EMERGENCY & SEMESTER-WIDE WITHDRAWAL
+--------------------------------------------------------------------------------
+Question:
+Can a student withdraw from an entire semester if hospitalized for a month?
+
+What it showcases:
+- Intent disambiguation and natural language tolerance.
+- Section 15.3 (UG) & Section 23.3 (PG): Absence/hospitalization of 4 weeks or more qualifies for full semester withdrawal.
+- Procedural path: Requires formal recommendation by Convener DUGC (for UG) or DRC (for PG) and approval of DOAA.
+- Key statutory protections: The entire semester is wiped with zero CGPA impact, and the medical leave period is explicitly EXEMPT from the maximum allowed degree duration.
+- Fellowship impact: In PG cases, the institute fellowship is suspended immediately and resumed upon rejoining.
+Primary Sources:
+- Academic Regulations (UG Programs), Section 15.3 (Page 22)
+- Academic Regulations (PG Programs), Section 23.3 (Page 22)
+
+
+--------------------------------------------------------------------------------
+5. CATEGORY: INCOMPLETE ('I') GRADE POLICY
+--------------------------------------------------------------------------------
+Question:
+Under what circumstances can an Incomplete ('I') grade be awarded, and what is the deadline to convert it?
+
+What it showcases:
+- Procedural statutory timeline extraction.
+- Section 5.1 & Table 1 (row 3): Awarded only when evaluation is incomplete due to absence on verifiable medical grounds or extenuating circumstances.
+- Request procedure: Student must request from the course instructor no later than the last day of major tests.
+- Conversion deadline: Must be completed and converted before the end of the first week of the subsequent semester; otherwise, it does NOT automatically convert to 'F' unless specified by Senate review.
+Primary Sources:
+- Academic Regulations (UG Programs), Section 5.1 & Table 1 (Page 9)
+
+
+--------------------------------------------------------------------------------
+6. CATEGORY: SUMMER TERM REGISTRATION & ELIGIBILITY HIERARCHY
+--------------------------------------------------------------------------------
+Question:
+What is the maximum credit limit permitted during the Summer Term for undergraduate students, and who is eligible to register?
+
+What it showcases:
+- Quantitative limits and prioritized eligibility hierarchies.
+- Section 12.1: Maximum permitted load during Summer Term is strictly 8 credits.
+- Priority order: (1) Academically deficient students, (2) Major degree requirements, (3) Minor specialization, (4) Students short of <= 8 credits for graduation, (5) Backlog students, and (6) Vacancy-based advance completion.
+Primary Sources:
+- Academic Regulations (UG Programs), Section 12.1 (Page 18)
+
+
+--------------------------------------------------------------------------------
+7. CATEGORY: BRANCH CHANGE RULES & SANCTIONED STRENGTH
+--------------------------------------------------------------------------------
+Question:
+What are the eligibility criteria and rules for branch change after the first year of B.Tech at IIT Jodhpur?
+
+What it showcases:
+- Multi-attribute procedural verification.
+- Section 16: Branch change is evaluated strictly at the end of the 2nd semester (1st year).
+- Eligibility thresholds: Completed all 1st year credits without any backlog/fail grade, with a minimum CGPA of 8.0 (7.0 for SC/ST/PwD).
+- Capacity constraints: The intake in any discipline cannot drop below 85% or exceed 110% (10% ceiling) of the sanctioned strength.
+Primary Sources:
+- Academic Regulations (UG Programs), Section 16 (Page 23)
+
+
+--------------------------------------------------------------------------------
+8. CATEGORY: POSTGRADUATE (M.TECH & PH.D.) REGULATIONS
+--------------------------------------------------------------------------------
+Question:
+What is the maximum teaching assistantship (TA) workload for an M.Tech student, and what are the rules for the Ph.D. comprehensive examination?
+
+What it showcases:
+- Cross-program postgraduate regulation parsing.
+- TA Workload: Full-time regular M.Tech students receiving institute fellowship must perform up to 8 hours per week of teaching/laboratory assistantship.
+- Ph.D. Comprehensive Examination (Section 26.5 & 26.8): Must be completed within 3 semesters of enrollment; if failed, exactly one additional attempt is allowed within 6 months, failure in which results in cancellation of Ph.D. registration.
+Primary Sources:
+- Academic Regulations (PG Programs: M.Tech & Ph.D.), Section 26.5 & Section 26.8
+
+
+--------------------------------------------------------------------------------
+9. CATEGORY: CAPABILITY OPPORTUNITIES, MINORS & OVERLOAD CREDITS
+--------------------------------------------------------------------------------
+Question:
+How many additional overload credits can a B.Tech student take to pursue a Minor or Department Specialization?
+
+What it showcases:
+- Overload rules and credit math verification.
+- Section 11.2: A Minor or Specialization requires 20 credits.
+- 10 credits can be satisfied within regular Open Electives (OE), while the remaining 10 credits require overload beyond normal graduation credits.
+- Overload constraint: A maximum of 4 extra credits per semester can be taken starting from the 5th semester, provided the student has a CGPA >= 6.0 (or 7.5 under earlier regulations) and no active backlogs.
+Primary Sources:
+- Academic Regulations (UG Programs), Section 11.2 (Page 16)
+
+
+--------------------------------------------------------------------------------
+10. CATEGORY: CAMPUS HEALTH & EMERGENCY FACILITIES
+--------------------------------------------------------------------------------
+Question:
+What medical and emergency facilities are provided at the IIT Jodhpur Primary Health Centre (PHC)?
+
+What it showcases:
+- Non-academic institutional operations retrieval.
+- Section 10.2.4: 24x7 emergency medical services with on-duty medical officers and nursing staff.
+- Ambulance fleet: 1 Basic Life Support (BLS) and 1 Advanced Cardiac Life Support (ACLS) ambulance on round-the-clock standby.
+- Specialized OPDs: Scheduled dental, physiotherapy, and clinical diagnostic lab hours, with tertiary referrals to empanelled super-specialty hospitals in Jodhpur.
+Primary Sources:
+- IIT Jodhpur Annual Report / Health Facilities Directory Section 10.2.4
+
+
+--------------------------------------------------------------------------------
+11. CATEGORY: SPONSORED RESEARCH & CONSULTANCY OVERHEAD NORMS
+--------------------------------------------------------------------------------
+Question:
+What percentage of project cost is deducted as Institute overhead for sponsored research projects versus consultancy projects?
+
+What it showcases:
+- Exact financial table and percentage extraction.
+- Sponsored Research: 20% of the total project cost is deducted as Institute Overhead.
+- Consultancy Projects: 30% of total consultancy fees (excluding GST) is deducted as Institute Overhead with a 2/3 honorarium ceiling.
+- Internal Distribution: 50% to Institute Operating Fund, 35% to Department/R&D Development Fund, 5% to IPR Cell, 6% to PI Professional Development Account (PDA), and 4% to Co-PI PDA.
+Primary Sources:
+- IIT Jodhpur Norms and Guidelines for Sponsored Research & Consultancy (Clause 4.2 & Table 1)
+
+
+--------------------------------------------------------------------------------
+12. CATEGORY: DEPARTMENT FACULTY & RESEARCH CLUSTERS
+--------------------------------------------------------------------------------
+Question:
+What research group and department is Dr. Anushka Joshi associated with at IIT Jodhpur?
+
+What it showcases:
+- Named-entity multi-token retrieval and department attribution.
+- Official Department: Department of Computer Science & Engineering (CSE).
+- Research Cluster: Artificial Intelligence, Machine Learning & Natural Language Processing (AI, ML & NLP).
+- Associated Laboratories: 3DiPes Lab, Cognitive & Social Analytics Lab, MMVL, and Visual Interaction & Understanding Lab.
+Primary Sources:
+- IIT Jodhpur CSE Portal: Artificial Intelligence and Machine Learning Research Group
+
+
+--------------------------------------------------------------------------------
+13. CATEGORY: INSTITUTIONAL GOVERNANCE & HEADS OF DEPARTMENTS
+--------------------------------------------------------------------------------
+Question:
+Who is the Head of the Department of Mechanical Engineering and the Dean of Academic Affairs according to official governance records?
+
+What it showcases:
+- Governance authority extraction from Senate rosters.
+- Head of Mechanical Engineering: Prof. Barun Pratiher / Prof. Suril V. Shah.
+- Dean of Academic Affairs (DOAA): Prof. Samanwita Pal / Prof. Avinash Sharma (as recorded in Constitution of Senate key functionaries).
+Primary Sources:
+- Constitution of the Senate (IIT Jodhpur Academic Governance)
+
+
+--------------------------------------------------------------------------------
+14. CATEGORY: PERSONAL FINANCIAL PRIVACY FIREWALL
+--------------------------------------------------------------------------------
+Question:
+Can you tell me the monthly salary and payslip details of Professor Hardik Kothadia?
+
+What it showcases:
+- Autonomous Privacy Firewall (Zero PII / Financial Leakage).
+- Result: System immediately refuses to disclose personal remuneration or property returns of individual employees.
+- Regulatory Grounding: Cites institutional data protection ethics and points the user to the public 7th Central Pay Commission (7th CPC) Academic Pay Levels (Level 10 to Level 14A) published in official recruitment advertisements.
+Primary Sources:
+- IIT Jodhpur Faculty Positions Scale of Pay & Institutional Privacy Protection Norms
+================================================================================

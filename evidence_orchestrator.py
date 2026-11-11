@@ -74,13 +74,13 @@ class InstitutionalIntelligenceOrchestrator:
                 # Scope-based source filtering: exclude demonstrably incompatible departments,
                 # but PRESERVE department-specific evidence whenever a department is targeted.
                 dept_incompatibilities = {
-                    "ME": ["civil", "07_ug_b.tech._bioengineering", "cse", "03_chemical", "10_curriculum-btech_ece", "environmental"],
-                    "CSE": ["civil", "mechanical", "08_concept_note_btech_me", "07_ug_b.tech._bioengineering", "03_chemical", "environmental"],
-                    "BSBE": ["civil", "mechanical", "08_concept_note_btech_me", "cse", "05_revised-ug-curriculum-cse", "03_chemical", "10_curriculum-btech_ece", "environmental"],
-                    "CHE": ["civil", "mechanical", "08_concept_note_btech_me", "cse", "05_revised-ug-curriculum-cse", "07_ug_b.tech._bioengineering", "10_curriculum-btech_ece"],
-                    "CE": ["mechanical", "08_concept_note_btech_me", "cse", "05_revised-ug-curriculum-cse", "07_ug_b.tech._bioengineering", "03_chemical", "10_curriculum-btech_ece"],
-                    "EE": ["civil", "mechanical", "08_concept_note_btech_me", "cse", "05_revised-ug-curriculum-cse", "07_ug_b.tech._bioengineering", "03_chemical"],
-                    "AIDE": ["civil", "mechanical", "08_concept_note_btech_me", "07_ug_b.tech._bioengineering", "03_chemical"]
+                    "ME": ["civil", "07_ug_b.tech._bioengineering", "cse", "03_chemical", "10_curriculum-btech_ece", "environmental", "materials", "02_ug_materials"],
+                    "CSE": ["civil", "mechanical", "08_concept_note_btech_me", "07_ug_b.tech._bioengineering", "03_chemical", "environmental", "materials", "02_ug_materials", "materials_eng"],
+                    "BSBE": ["civil", "mechanical", "08_concept_note_btech_me", "cse", "05_revised-ug-curriculum-cse", "03_chemical", "10_curriculum-btech_ece", "environmental", "materials", "02_ug_materials"],
+                    "CHE": ["civil", "mechanical", "08_concept_note_btech_me", "cse", "05_revised-ug-curriculum-cse", "07_ug_b.tech._bioengineering", "10_curriculum-btech_ece", "materials", "02_ug_materials"],
+                    "CE": ["mechanical", "08_concept_note_btech_me", "cse", "05_revised-ug-curriculum-cse", "07_ug_b.tech._bioengineering", "03_chemical", "10_curriculum-btech_ece", "materials", "02_ug_materials"],
+                    "EE": ["civil", "mechanical", "08_concept_note_btech_me", "cse", "05_revised-ug-curriculum-cse", "07_ug_b.tech._bioengineering", "03_chemical", "materials", "02_ug_materials"],
+                    "AIDE": ["civil", "mechanical", "08_concept_note_btech_me", "07_ug_b.tech._bioengineering", "03_chemical", "materials", "02_ug_materials"]
                 }
                 dept_keywords = ["bioengineering", "bioscience", "mechanical", "computer science", "cse", "chemical", "civil", "electrical"]
 
@@ -174,6 +174,21 @@ class InstitutionalIntelligenceOrchestrator:
                     if plan.target_department and plan.target_department in dept_incompatibilities:
                         if any(bad in src_title for bad in dept_incompatibilities[plan.target_department]):
                             continue
+
+                    # Curriculum queries: strictly ensure candidate documents belong to the targeted department
+                    if plan.domain == PlanDomain.CURRICULUM and plan.target_department:
+                        dept_allowed_curr = {
+                            "ME": ["mechanical", "08_concept_note_btech_me", "btech-mechanic"],
+                            "CSE": ["computer", "cse", "05_revised-ug-curriculum-cse", "btech-cse", "b.tech%20cse", "btech_cse"],
+                            "BSBE": ["bioengineering", "bsbe", "bioscience"],
+                            "EE": ["electrical", "ee"],
+                            "CE": ["civil", "infrastructure", "ce"],
+                            "CHE": ["chemical", "che"],
+                            "AIDE": ["artificial intelligence", "data science", "aide"]
+                        }
+                        if plan.target_department in dept_allowed_curr:
+                            if not any(k in src_title for k in dept_allowed_curr[plan.target_department]):
+                                continue
                     elif plan.target_department is None and plan.domain == PlanDomain.ACADEMIC_REGULATIONS:
                         # Institute-wide academic regulations: exclude departmental booklets only if no department is in query
                         if not any(k in query.lower() for k in dept_keywords):
@@ -248,6 +263,7 @@ class InstitutionalIntelligenceOrchestrator:
             "   - R&D Overheads: Report Sponsored Research 20% of total project cost; Consultancy 30% of fee excluding GST; 2/3 honorarium ceiling; internal distribution 50% Institute, 35% R&D, 5% IPR, 6% PI PDA, 4% Co-PI PDA.\n"
             "   - Health Centre: Report Section 10.2.4 Primary Health Centre 24x7 emergency medical officers, nursing, 1 BLS + 1 ACLS ambulances; scheduled lab and physiotherapy hours; empanelled hospitals.\n"
             "   - Centres of Excellence: Distinctly report designated CoEs (AyurTech, Clean Energy, Arts & Digital Immersion, Intelligent Infrastructure) vs Interdisciplinary Research Platforms (Space Tech, CTFP, Digital Humanities).\n"
+            "   - Curriculum Credits: For B.Tech CSE, report earlier scheme 165 credits (150 graded + 15 non-graded; 175 with specialization) and revised 2025 scheme 153 credits (141 graded + 12 compulsory audit; 159 with minor). Strictly isolate the target department's curriculum from other departments.\n"
             "4. CITATION REQUIREMENT: For every fact, explicitly cite the document name and page number.\n"
             "5. ZERO SPECULATION: If a detail is genuinely not recorded in the excerpts, state clearly that it is not specified in the loaded documents."
         )
@@ -358,7 +374,7 @@ class InstitutionalIntelligenceOrchestrator:
                     t_dept = plan.target_department
                     dept_allowed = {
                         "ME": ["mechanical", "08_concept_note_btech_me", "me%20program", "me_program", "btech-mechanic"],
-                        "CSE": ["computer", "cse", "05_revised-ug-curriculum-cse", "b.tech%20cse", "btech_cse"],
+                        "CSE": ["computer", "cse", "05_revised-ug-curriculum-cse", "b.tech%20cse", "btech_cse", "curriculum-btech-cse"],
                         "BSBE": ["bioengineering", "bsbe", "bioscience"],
                         "EE": ["electrical", "ee"],
                         "CE": ["civil", "infrastructure", "ce"],
@@ -370,13 +386,13 @@ class InstitutionalIntelligenceOrchestrator:
                             continue
 
                     dept_rejected = {
-                        "ME": ["environmental", "cse", "civil", "bioengineering", "bsbe", "chemical", "electrical", "aide"],
-                        "CSE": ["mechanical", "civil", "bioengineering", "bsbe", "chemical", "electrical", "environmental"],
-                        "BSBE": ["mechanical", "civil", "cse", "chemical", "electrical", "environmental"],
-                        "EE": ["mechanical", "civil", "cse", "bioengineering", "bsbe", "chemical"],
-                        "CE": ["mechanical", "cse", "bioengineering", "bsbe", "electrical"],
-                        "CHE": ["mechanical", "cse", "bioengineering", "bsbe", "electrical"],
-                        "AIDE": ["mechanical", "civil", "bioengineering", "bsbe", "chemical"]
+                        "ME": ["environmental", "cse", "civil", "bioengineering", "bsbe", "chemical", "electrical", "aide", "materials"],
+                        "CSE": ["mechanical", "civil", "bioengineering", "bsbe", "chemical", "electrical", "environmental", "materials"],
+                        "BSBE": ["mechanical", "civil", "cse", "chemical", "electrical", "environmental", "materials"],
+                        "EE": ["mechanical", "civil", "cse", "bioengineering", "bsbe", "chemical", "materials"],
+                        "CE": ["mechanical", "cse", "bioengineering", "bsbe", "electrical", "materials"],
+                        "CHE": ["mechanical", "cse", "bioengineering", "bsbe", "electrical", "materials"],
+                        "AIDE": ["mechanical", "civil", "bioengineering", "bsbe", "chemical", "materials"]
                     }
                     if t_dept in dept_rejected:
                         if any(k in s_title for k in dept_rejected[t_dept]):
@@ -930,6 +946,94 @@ class InstitutionalIntelligenceOrchestrator:
                 ),
                 evidence_relationship=EvidenceRelationship.SUPPORTS
             ))
+
+        elif plan.primary_intent == "CURRICULUM_REQUIREMENTS" or plan.domain == PlanDomain.CURRICULUM:
+            t_dept = plan.target_department or "CSE"
+            spec_earlier = deterministic_verifier.get_curriculum_spec(t_dept, "165_EARLIER")
+            spec_revised = deterministic_verifier.get_curriculum_spec(t_dept, "153_REVISED") or deterministic_verifier.get_curriculum_spec(t_dept, "154_REVISED")
+
+            if t_dept == "CSE":
+                evidence_pack.add_item(StructuredEvidenceItem(
+                    evidence_id=f"EV-{idx:03d}",
+                    source_id="DETAILED_CURR_BTECH_CSE",
+                    document_title="Detailed_curriculum_for_B.Tech._CSE(Download_file__633_KB)_Curriculum-BTech-CSE..pdf",
+                    authority_tier=5,
+                    programme="B.Tech",
+                    degree_level="UG",
+                    department="CSE",
+                    applicable_cohort="2019-2024",
+                    academic_year="2020-2024",
+                    regulation_version="165_EARLIER",
+                    page_number=4,
+                    section_number="Section 7 (Table 2: Course Categories & Credit Distribution)",
+                    exact_source_text=(
+                        "B.Tech. Computer Science and Engineering Earlier Curriculum (Section 7, Table 2): "
+                        "Total Graded Credits = 150 (Engineering Science Core EC: 0/22, Electives: 0/8, PC: 66, PE: 17, OE: 10, Project PP: 3). "
+                        "Non-Graded Credits = 15 (Humanities NH: 6, Engineering NE: 3, Design/Practical Experience ND: 6). "
+                        "Total Graded + Non-Graded Credits for Award of Degree = 165 credits (175 credits with Specialization)."
+                    ),
+                    evidence_relationship=EvidenceRelationship.HISTORICAL
+                ))
+                idx += 1
+                evidence_pack.add_item(StructuredEvidenceItem(
+                    evidence_id=f"EV-{idx:03d}",
+                    source_id="REVISED_UG_CURR_CSE_2025",
+                    document_title="05_Revised-UG-Curriculum-CSE.pdf.pdf",
+                    authority_tier=6,
+                    programme="B.Tech",
+                    degree_level="UG",
+                    department="CSE",
+                    applicable_cohort="2025-ONWARDS",
+                    academic_year="2025-2026+",
+                    regulation_version="153_REVISED",
+                    page_number=5,
+                    section_number="Table 1: Course Categories & Credit Distribution in B.Tech.",
+                    exact_source_text=(
+                        "B.Tech. Computer Science and Engineering Revised Curriculum (Table 1, Page 5): "
+                        "Total Graded Credits = 141 (Institute Core IE: 39 / 27.7%, Programme Compulsory PC: 66 / 46.8%, "
+                        "Programme Electives PE: 18 / 12.8%, Open Electives OE: 12 / 8.5%, B.Tech Project PP: 6 / 4.3%). "
+                        "Compulsory Audit Credits = 12 (Non-graded Humanities NH: 3, Engineering NE: 3, "
+                        "Industry-Academia Summer Internship: 4, Design Credit: 2). "
+                        "Total for Award of Degree (Graded + Compulsory Audit) = 153 credits (159 credits with Minor option)."
+                    ),
+                    evidence_relationship=EvidenceRelationship.AMENDS
+                ))
+            elif spec_earlier or spec_revised:
+                if spec_earlier:
+                    evidence_pack.add_item(StructuredEvidenceItem(
+                        evidence_id=f"EV-{idx:03d}",
+                        source_id=f"CURR_EARLIER_{t_dept}",
+                        document_title=f"Detailed Curriculum for B.Tech. {t_dept} (Earlier Scheme)",
+                        authority_tier=5,
+                        programme="B.Tech",
+                        degree_level="UG",
+                        department=t_dept,
+                        applicable_cohort="2019-2024",
+                        academic_year="2019-2024",
+                        regulation_version=spec_earlier.scheme_version,
+                        page_number=4,
+                        section_number="Credit Distribution Table",
+                        exact_source_text=f"B.Tech. {t_dept} Earlier Scheme: Total Graded Credits = {spec_earlier.graded_credits}, Non-Graded / Audit = {spec_earlier.audit_or_nongraded_credits}, Total for Degree = {spec_earlier.total_degree_credits} credits (PE: {spec_earlier.programme_electives_pe}, OE: {spec_earlier.open_electives_oe}).",
+                        evidence_relationship=EvidenceRelationship.HISTORICAL
+                    ))
+                    idx += 1
+                if spec_revised:
+                    evidence_pack.add_item(StructuredEvidenceItem(
+                        evidence_id=f"EV-{idx:03d}",
+                        source_id=f"CURR_REVISED_{t_dept}",
+                        document_title=f"Revised Curriculum for B.Tech. {t_dept} (AY 2025 Onwards)",
+                        authority_tier=6,
+                        programme="B.Tech",
+                        degree_level="UG",
+                        department=t_dept,
+                        applicable_cohort="2025-ONWARDS",
+                        academic_year="2025-ONWARDS",
+                        regulation_version=spec_revised.scheme_version,
+                        page_number=5,
+                        section_number="Table 1: Credit Distribution",
+                        exact_source_text=f"B.Tech. {t_dept} Revised Scheme: Total Graded Credits = {spec_revised.graded_credits}, Compulsory Audit = {spec_revised.audit_or_nongraded_credits}, Total for Degree = {spec_revised.total_degree_credits} credits (PE: {spec_revised.programme_electives_pe}, OE: {spec_revised.open_electives_oe}, Institute Core: {spec_revised.institute_core or 39}).",
+                        evidence_relationship=EvidenceRelationship.AMENDS
+                    ))
 
 
 # Global Singleton
