@@ -331,10 +331,9 @@ python eval/run_eval.py          # run the comparison -> eval/results.json
 
 ## 🙏 Acknowledgements
 
-- **Supervisor:** <!-- Prof. ______ -->
+- **Supervisor:** <!-- Prof. Sumit Kalra -->
 - Department of <!-- ______ -->, **IIT Jodhpur**
 - Open-source projects: ChromaDB, Qdrant, Docling, MinerU, bm25s, Sentence-Transformers, Streamlit, FastAPI, CLIP
 
 ---
 
-<p align="center">Made with ❤️ by <a href="https://github.com/b23cm1024">b23cm1024</a></p>
