@@ -1,11 +1,11 @@
-# 🎓 IIT Jodhpur Institutional Intelligence Advisor
+# IIT Jodhpur Institutional Intelligence Advisor
 
 > An evidence-grounded, hybrid-retrieval RAG system that answers questions about IIT Jodhpur from official institutional documents, with citations and multi-stage answer validation.
 
 
 ---
 
-## 📌 Table of Contents
+##  Table of Contents
 
 1. [Overview](#-overview)
 2. [Key Features](#-key-features)
@@ -22,7 +22,7 @@
 
 ---
 
-## 🔍 Overview
+##  Overview
 
 Institutional information at IIT Jodhpur (academic rules, regulations, curricula, fees, circulars) is scattered across many websites and PDFs, so reliable answers are hard to find.
 
@@ -37,30 +37,30 @@ This project is an **AI advisor** that:
 
 ---
 
-## ✨ Key Features
+##  Key Features
 
 | Feature | Description |
 |---|---|
-| 🌐 **Crawling** | `crawler.py`, `deep_crawl.py`, `crawl_all.py` with configurable `download_rules.py` |
-| 📄 **Dual PDF parsing** | `parsers/` combines **Docling** and **MinerU** adapters via `dual_parser` |
-| 🧮 **Rich extraction** | Dedicated table, figure and equation extractors |
-| 🗂️ **Structured data** | Canonical structured tables and an academic database (`iitj_academic.db`) |
-| 🧩 **Smart chunking** | Structure-aware chunker (`chunker_v3.py`) |
-| 🔀 **Hybrid retrieval** | Dense search (ChromaDB + `all-MiniLM-L6-v2`) and sparse BM25 (`bm25s`) fused with **Reciprocal Rank Fusion** |
-| 🎯 **Metadata filtering** | Detects programme (CSE, AIDE, ME, EE, CE, …) and semester from the query |
-| 🔎 **Query intelligence** | Query understanding and planning before retrieval |
-| 🏛️ **Source authority** | Source registry and authority scoring prefer official sources |
-| 🧠 **Evidence-grounded generation** | Evidence extraction → evidence pack → grounded generator |
-| ✅ **Multi-stage validation** | Retrieval validator, evidence integrity, topic-mismatch validator, deterministic verifier, answer validator |
-| 🔁 **LLM fallback chain** | Groq `gpt-oss-120b` → `gpt-oss-20b` / `qwen3.8-27b`; optional Google Gemini |
-| 🖼️ **Multimodal** | CLIP embeddings for figures/images |
-| 🔌 **REST API** | FastAPI service in `api/` |
-| 💬 **Web UI** | Streamlit chat interface in `app.py` |
-| 🕵️ **Tracing & auditing** | `execution_tracer.py`, document inventory, corpus completeness auditor |
+|  **Crawling** | `crawler.py`, `deep_crawl.py`, `crawl_all.py` with configurable `download_rules.py` |
+|  **Dual PDF parsing** | `parsers/` combines **Docling** and **MinerU** adapters via `dual_parser` |
+|  **Rich extraction** | Dedicated table, figure and equation extractors |
+|  **Structured data** | Canonical structured tables and an academic database (`iitj_academic.db`) |
+|  **Smart chunking** | Structure-aware chunker (`chunker_v3.py`) |
+|  **Hybrid retrieval** | Dense search (ChromaDB + `all-MiniLM-L6-v2`) and sparse BM25 (`bm25s`) fused with **Reciprocal Rank Fusion** |
+|  **Metadata filtering** | Detects programme (CSE, AIDE, ME, EE, CE, …) and semester from the query |
+|  **Query intelligence** | Query understanding and planning before retrieval |
+|  **Source authority** | Source registry and authority scoring prefer official sources |
+|  **Evidence-grounded generation** | Evidence extraction → evidence pack → grounded generator |
+|  **Multi-stage validation** | Retrieval validator, evidence integrity, topic-mismatch validator, deterministic verifier, answer validator |
+|  **LLM fallback chain** | Groq `gpt-oss-120b` → `gpt-oss-20b` / `qwen3.8-27b`; optional Google Gemini |
+|  **Multimodal** | CLIP embeddings for figures/images |
+|  **REST API** | FastAPI service in `api/` |
+|  **Web UI** | Streamlit chat interface in `app.py` |
+|  **Tracing & auditing** | `execution_tracer.py`, document inventory, corpus completeness auditor |
 
 ---
 
-## 🏗️ System Architecture
+##  System Architecture
 
 ```
  ┌─────────────────── INGESTION (offline) ───────────────────┐
@@ -100,7 +100,7 @@ This project is an **AI advisor** that:
 
 ---
 
-## 📁 Repository Structure
+##  Repository Structure
 
 ```
 BTech_Project/
@@ -148,7 +148,7 @@ BTech_Project/
 
 ---
 
-## 🧰 Tech Stack
+##  Tech Stack
 
 | Layer | Technology |
 |---|---|
@@ -166,7 +166,7 @@ BTech_Project/
 
 ---
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### Prerequisites
 
@@ -206,7 +206,7 @@ STREAMLIT_SERVER_PORT=8501
 FASTAPI_PORT=8000
 ```
 
-> ⚠️ Keep real keys only in `.env`. `.env.example` must contain placeholders only.
+>  Keep real keys only in `.env`. `.env.example` must contain placeholders only.
 
 ### 3. Prepare the data and build the indexes
 
@@ -225,7 +225,7 @@ This creates `data/chromadb/` and `data/bm25_index/`. Afterwards you may set `HF
 
 ---
 
-## ▶️ Usage
+##  Usage
 
 ### Run the web app
 
@@ -249,7 +249,7 @@ uvicorn api.server:app --port 8000 --reload
 
 ---
 
-## 🔄 Data Pipeline
+##  Data Pipeline
 
 The repo ships with a pre-built chunk index. To rebuild the knowledge base from scratch:
 
@@ -264,7 +264,7 @@ python corpus_completeness_auditor.py   # 4. (Optional) Audit corpus coverage
 
 ---
 
-## 📈 Evaluation & Results
+##  Evaluation & Results
 
 ### Setup
 
@@ -299,7 +299,7 @@ python eval/run_eval.py          # run the comparison -> eval/results.json
 
 ---
 
-## 🛠️ Troubleshooting
+##  Troubleshooting
 
 | Problem | Fix |
 |---|---|
@@ -313,7 +313,7 @@ python eval/run_eval.py          # run the comparison -> eval/results.json
 
 ---
 
-## ⚠️ Limitations & Future Work
+##  Limitations & Future Work
 
 **Limitations**
 - Answers are only as current as the last crawl of the source documents.
@@ -329,10 +329,10 @@ python eval/run_eval.py          # run the comparison -> eval/results.json
 
 ---
 
-## 🙏 Acknowledgements
+##  Acknowledgements
 
 - **Supervisor:** <!-- Prof. Sumit Kalra -->
-- Department of <!-- ______ -->, **IIT Jodhpur**
+- Department of <!-- CSE -->, **IIT Jodhpur**
 - Open-source projects: ChromaDB, Qdrant, Docling, MinerU, bm25s, Sentence-Transformers, Streamlit, FastAPI, CLIP
 
 ---
