@@ -561,7 +561,10 @@ class QueryPlanner:
             ))
 
         # --- R1. SEMESTER WITHDRAWAL & COMPARISON WITH COURSE WITHDRAWAL ---
-        elif re.search(r"\b(?:semester\s+withdrawal|withdraw\s+(?:from\s+)?(?:a\s+)?semester|withdrawal\s+from\s+semester)\b", q_lower) or ("withdrawal" in q_lower and "semester" in q_lower):
+        elif (
+            re.search(r"\b(?:semester\s+withdrawal|withdraw\s+(?:from\s+)?(?:an?\s+)?(?:entire\s+)?semester|withdrawal\s+from\s+(?:an?\s+)?(?:entire\s+)?semester)\b", q_lower)
+            or (("withdraw" in q_lower or "withdrawal" in q_lower) and ("semester" in q_lower or "term" in q_lower))
+        ):
             domain = PlanDomain.ACADEMIC_REGULATIONS
             primary_intent = "SEMESTER_WITHDRAWAL_POLICY"
             sub_reqs.append(SubRequirement(
