@@ -265,7 +265,6 @@ python corpus_completeness_auditor.py   # 4. (Optional) Audit corpus coverage
 ---
 
 ##  Evaluation & Results
-##  Evaluation & Results
 
 ### Setup
 
@@ -316,19 +315,6 @@ python eval/run_eval.py
 
 ---
 
-##  Troubleshooting
-
-| Problem | Fix |
-|---|---|
-| `FileNotFoundError: data/index_chunks.json` | Decompress `index_chunks.json.gz` (see step 3) |
-| `We couldn't connect to 'https://huggingface.co'` | Set `HF_HUB_OFFLINE=0` and `TRANSFORMERS_OFFLINE=0`, then download the model with `snapshot_download` |
-| `does not appear to have a file named model.safetensors` | The cache has only `config.json`. Run the `snapshot_download` command above |
-| Groq `401 AuthenticationError` | Wrong or placeholder API key in `.env` |
-| Groq `404 model_not_found` | Use a current model from `client.models.list()`, e.g. `openai/gpt-oss-120b` |
-| Gemini auth error | Add a real `GEMINI_API_KEY`, or choose **Groq** in the app |
-| `CrossEncoder fallback` notice | Harmless; allow a one-time online run to download the re-ranker |
-
----
 
 ##  Limitations & Future Work
 
