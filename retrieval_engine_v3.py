@@ -495,6 +495,45 @@ class RetrievalEngineV3:
                 if len(additional_cands) >= 100:
                     break
 
+        # Entity and Proper Noun Phrase Injection: ensure named entities (e.g. faculty / staff names)
+        # mentioned in the query are guaranteed candidate representation in the re-ranking pool
+        name_tokens = [
+            w for w in re.findall(r"\b[a-zA-Z]{3,}\b", q_low)
+            if w not in {
+                "can", "you", "tell", "about", "what", "where", "which", "when", "does", "have",
+                "professor", "proffessor", "prof", "doctor", "department", "dept", "faculty",
+                "institute", "information", "details", "brief", "profile", "member", "members",
+                "show", "give", "please", "who", "whom", "whose", "the", "and"
+            }
+        ]
+        if len(name_tokens) >= 2:
+            pair_phrases = [
+                f"{name_tokens[i]} {name_tokens[i+1]}"
+                for i in range(len(name_tokens) - 1)
+            ]
+            cand_by_id = {c.chunk_id: c for c in fused_candidates}
+            for c in self.all_chunks:
+                cid = c.get("id") or c.get("chunk_id")
+                if not cid:
+                    continue
+                c_text = c.get("text", "").lower()
+                c_src = c.get("source", "").lower()
+                matched_score = 0.0
+                for pp in pair_phrases:
+                    if pp in c_text or pp in c_src:
+                        matched_score = 0.080
+                        break
+                    w1, w2 = pp.split()
+                    if w1 in c_text and w2 in c_text:
+                        matched_score = 0.050
+                        break
+                if matched_score > 0:
+                    if cid in cand_by_id:
+                        cand_by_id[cid].scores.rrf_score = max(cand_by_id[cid].scores.rrf_score or 0.0, matched_score)
+                    elif cid not in existing_cids:
+                        additional_cands.append((c, matched_score))
+                        existing_cids.add(cid)
+
         for c, score_rrf in additional_cands:
             cid = c.get("id") or c.get("chunk_id")
             prov = Provenance(
@@ -560,6 +599,21 @@ class RetrievalEngineV3:
         else:
             rerank_pool = candidates[:min(len(candidates), 45)]
 
+        # Extract entity/name phrases for precise person-level re-ranking
+        name_tokens = [
+            w for w in re.findall(r"\b[a-zA-Z]{3,}\b", q_low)
+            if w not in {
+                "can", "you", "tell", "about", "what", "where", "which", "when", "does", "have",
+                "professor", "proffessor", "prof", "doctor", "department", "dept", "faculty",
+                "institute", "information", "details", "brief", "profile", "member", "members",
+                "show", "give", "please", "who", "whom", "whose", "the", "and"
+            }
+        ]
+        pair_phrases = [
+            f"{name_tokens[i]} {name_tokens[i+1]}"
+            for i in range(len(name_tokens) - 1)
+        ] if len(name_tokens) >= 2 else []
+
         pairs = []
         for c in rerank_pool:
             c_raw = c.chunk.get("text", "")
@@ -597,6 +651,15 @@ class RetrievalEngineV3:
                     elif check_foreign_entity(prog_target, c_src):
                         # Penalize foreign department documents when a specific department was queried
                         final_rank_score -= 10.0
+
+                if pair_phrases:
+                    c_text_l = c_text.lower()
+                    c_src_l = c_src.lower()
+                    if any(pp in c_text_l or pp in c_src_l for pp in pair_phrases):
+                        final_rank_score += 10.0
+                    elif len(name_tokens) >= 2 and any(nt in c_text_l or nt in c_src_l for nt in name_tokens):
+                        # Partial name collision (e.g. only surname "Joshi" matches a different faculty member)
+                        final_rank_score -= 4.0
 
                 # Degree level alignment and strict PG-UG isolation
                 if is_ug:

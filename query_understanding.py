@@ -168,8 +168,11 @@ def detect_degree_level(q_lower: str) -> str:
 
 def detect_subject_entity(q_lower: str) -> Optional[str]:
     """Identifies specific academic department or programme if present."""
+    is_pronoun_me = bool(re.search(r"\b(?:tell|give|show|guide|help|inform|remind|advise|ask|contact|email|ping|for|to|with|about)\s+me\b|\bme\s+(?:about|the|a|an|if|how|what|when|where|which|why|can|could|would|should|to|in|on)\b", q_lower))
     for entity, patterns in ENTITY_PATTERNS.items():
         for pat in patterns:
+            if entity == "Mechanical Engineering" and is_pronoun_me and not re.search(r"\b(?:mechanical|mech|mechanical\s+engineering)\b", q_lower):
+                continue
             if re.search(pat, q_lower):
                 return entity
     return None

@@ -61,7 +61,12 @@ ROMAN_MAP = {'i':1,'ii':2,'iii':3,'iv':4,'v':5,'vi':6,'vii':7,'viii':8}
 
 def _detect_programme_in_query(query: str):
     lower = query.lower()
+    is_pronoun_me = bool(re.search(r"\b(?:tell|give|show|guide|help|inform|remind|advise|ask|contact|email|ping|for|to|with|about)\s+me\b|\bme\s+(?:about|the|a|an|if|how|what|when|where|which|why|can|could|would|should|to|in|on)\b", lower))
     for pat, label in PROGRAMME_PATTERNS:
+        if label == 'ME':
+            if re.search(r'mechanical\s+engineering', lower) or (re.search(r'\bme\b', lower) and not is_pronoun_me):
+                return 'ME'
+            continue
         if re.search(pat, lower):
             return label
     return None
